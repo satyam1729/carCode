@@ -1,25 +1,38 @@
-//
+//HV...suspicious!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!,TSAL,additional SW,interlock,micro_sw,
 int accnpedal1,accnpedal2,brakepedal,HV,accnav;
 
 bool startcondn(){
-  if(brakepedal>(0.2*1023)&&(0==0)){
+  if(brakepedal>(0.2*1023)){//start button pressed or not
     return true;
     }
     else {
       return false;}
   }
-
-  
-void start(){
-  
-  //turn on the the engine;
-  }
-  void mainrel(){
-    
+  void buzzer(){
+    digitalWrite(12,1);     
     }
-
+    void buzzerstop(){
+    digitalWrite(12,0); 
+    }
+  void precharge(){
+    digitalWrite(10,1);
+    }
+    void mainrelon(){
+      digitalWrite(10,0);
+      digitalWrite(11,1);
+      //turn off precharge and start mainrelay}
+void start(){
+  digitalWrite(14,1);
+  buzzer();
+  precharge();
+  delay(3000);
+  buzzerstop();
+  delay(2000);
+  mainrelon();
+  }
+ 
 bool plauscheck(){
-  if((accnav>0.25*1023)&&(brakepedal>0.15*1023)){
+  if((accnav>0.3*(1023))&&(brakepedal>0.15*1023)){
       return false;}
       else{ 
         return true;
@@ -40,9 +53,16 @@ bool check(){
   }
 
 
-void shtdowncon(){
+void shtdown(){
   digitalWrite(14,0);    
   }
+  void tmpshtdown(){
+    digitalWrite(11,0);
+    while(accnav>0.3*(1023){
+//
+      }
+  digitalWrite(11,1);
+    }
 
   
 void setup() {
@@ -87,11 +107,20 @@ void loop() {
  HV=analogRead(19);
  accnav=(accnpedal1+accnpedal2)/2;
  if(check()){
-  
+  if (plauscheck()){
+    
+    //runningsljdgf;lagjvas;a
+    analogWrite(8,accnav*255/1023);
+    analogWrite(9,brakepedal*255/1023);
+    analogWrite(8,accnav*255/1023);
+    }
+    else{
+      tmpshtdown();
+      }
+  }
   
   }
   else{
-    shtdowncon();
-    
+    shtdown();
     }
 }
